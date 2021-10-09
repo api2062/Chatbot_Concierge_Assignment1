@@ -259,8 +259,8 @@ def dispatch(intent_request):
     """
     Dispatches the to the appropriate intent
     """
-    # intent_name = intent_request['currentIntent']['name']
-    intent_name = 'GreetingIntent'
+    intent_name = intent_request['currentIntent']['name']
+    # intent_name = 'GreetingIntent'
     # Dispatch to your bot's intent handlers
     if intent_name == 'GreetingIntent':
         return Greeting(intent_request)
