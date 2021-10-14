@@ -76,24 +76,26 @@ def lambda_handler(event=None, context=None):
     print('Hello')
     queue = sqs.get_queue_by_name(QueueName='restaurant_chatbot')
     print(queue)
-    messages = queue.receive_messages(MessageAttributeNames=['All'])
-    print(messages)
+    print(event)
+    # messages = queue.receive_messages(AttributeNames=['All'])
+    # messages = queue.receive_messages(MessageAttributeNames=['All'])
+    # print(messages)
+    messages = event['Records'][0]['body']
     print('Hello1')
     try:
-        message = messages[0]
-        print('Hellotry')
-        print(message)
-        print(message[0])
-        location = message.message_attributes.get('location').get('StringValue')
-        cuisine = message.message_attributes.get('cuisine').get('StringValue')
-        dining_date = message.message_attributes.get('date').get('StringValue')
-        dining_time = message.message_attributes.get('time').get('StringValue')
-        num_people = message.message_attributes.get('numPeople').get('StringValue')
-        phone = message.message_attributes.get('phone').get('StringValue')
+        message = messages
+        message1 = json.loads(message)
+        location = message1.get('location').get('StringValue')
+        cuisine = message1.get('cuisine').get('StringValue')
+        dining_date = message1.get('date').get('StringValue')
+        dining_time = message1.get('diningTime').get('StringValue')
+        num_people = message1.get('numberOfPeople').get('StringValue')
+        phone = message1.get('phoneNumber').get('StringValue')
         print(location, cuisine, dining_date, dining_time, num_people, phone)
         ids = search(cuisine)
         ids = list(map(lambda x: x['_id'], ids))
         rest_details = get_restaurant_data(ids)
+        # phone = '6316205900'
         sendsms("+1"+phone, rest_details)
         message.delete()
     except Exception as e:
