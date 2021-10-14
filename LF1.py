@@ -238,17 +238,13 @@ def sendSQSMessage(requestData):
             'StringValue': requestData['peoplenum']
         }
     }
-    # mesAtrributes = json.dumps(messageAttributes)
-    messageBody = ('Slots for the Restaurant')
-    # print mesAtrributes
-    print(messageBody)
-    print (messageAttributes)
+    mesAtrributes = json.dumps(messageAttributes)
+    print("mesAtrributes",mesAtrributes)
     response = queue.send_message(
         MessageAttributes=messageAttributes,
-        MessageBody=messageBody
+        MessageBody=mesAtrributes
     )
-    print(response)
-
+    print("response",response)
     return response.get('MessageId')
 
 
